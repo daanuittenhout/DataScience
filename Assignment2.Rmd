@@ -1,0 +1,21 @@
+---
+title: "Data Wrangling Assignment 1"
+authors: "Alexander Uitendaal , Milad Ehsan(10732918) , Daan Uittenhout(11057777) and Isabel Slot()"
+output:
+  html_document: default
+pdf_document: default
+---
+
+Install and add all packages that will be used for this assignment
+
+```{r}
+
+
+```
+ 
+  ```{r include = TRUE}
+# install.packages( "viridis" )    # to install the package, if you've not install it before
+library( viridis )
+```
+
+render("Assignment1.rmd", output_file = "Assignment1")
