@@ -9,7 +9,12 @@ pdf_document: default
 Install and add all packages that will be used for this assignment
 
 ```{r}
-
+install.packages(mlbench)
+library("mlbench")
+library(ggplot2)
+library( taRifx )
+library("descr")
+library(corrplot)
 
 ```
  
