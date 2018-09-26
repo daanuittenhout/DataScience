@@ -29,7 +29,7 @@ library( viridis )
 ```{r}
 data("BreastCancer")  #install the right dataset: BreastCancer
 View(BreastCancer)
-
+plot (BreastCancer)
 ## Missing values 
 missing <- is.na(BreastCancer) #Check whether there are missing values
 View(missing) 
