@@ -55,7 +55,7 @@ BreastCancer2 <- BreastcancerImputted $data
 ```
 ```{r fig.width=200, fig.height=250}
 plot (BreastCancer)
-```
+ ```
 
 sss
 
