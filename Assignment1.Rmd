@@ -22,7 +22,6 @@ View(BreastCancer)
 
 Check the data on missing values and omit these values
 ```{r}
-## Missing values 
 # Check whether there are missing values
 missing <- is.na(BreastCancer) 
 summary(missing) 
@@ -31,7 +30,8 @@ BreastCancer2<-na.omit(BreastCancer)
 summary(BreastCancer2)
 
 ```
-Conclusion after checking the data, only 16 out of 700 (+/- 2%) observations where lost, so imputing is not necessary because 
+### Conclusion 
+After checking the data, only 16 out of 700 (+/- 2%) observations where lost, so imputing is not necessary because 
 only very little information is lost because of the missing values 
 
 ## Visualizing the data
