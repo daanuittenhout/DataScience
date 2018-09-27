@@ -34,69 +34,91 @@ summary(BreastCancer2)
 Conclusion after checking the data, only 16 out of 700 (+/- 2%) observations where lost, so imputing is not necessary because 
 only very little information is lost because of the missing values 
 
-## Visualizing the data stage 1
+## Visualizing the data
 
+### Visualizing the variables and see their relation with the Class type of the Cancer
+### *Also look for outliers*
 
 ```{r}
-## Visualise the variables and see their relation with the Class type of the Cancer
-## Also look for outliers, 
-
 # instal the nececary packages and add them to the libary
 install.packages("ggplot2")
 library("ggplot2")
+```
 
-"Variable 1 : cell thickness"
-# Plot the a frequency relation between cell thikness and breastcancer 
+#### Variable 1 : cell thickness
+#### Plot the a frequency relation between cell thikness and breastcancer 
+
+```{r}
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Cl.thickness,
                fill = BreastCancer2$Class),
            position = "Stack") + scale_x_discrete("Clump Thickness")+scale_y_continuous("Frequency")+
   guides(fill=guide_legend(title="Class type"))+scale_fill_manual(values=c("red", "blue"))
-# No outliers spotted 
+```
+#### *No outliers spotted*
 
-"Variable 2 : cell size"
-# Plot the a frequency relation between cell size and breastcancer 
+#### Variable 2 : cell size
+#### Plot the a frequency relation between cell size and breastcancer 
+```{r}
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Cell.size,
                fill = BreastCancer2$Class),
            position = "Stack") + scale_x_discrete("Cell Size")+scale_y_continuous("Frequency")+
   guides(fill=guide_legend(title="Class type"))+scale_fill_manual(values=c("red", "blue"))
-# No outliers spotted 
 
-"Variable 3 : cell shape"
-# Plot the a frequency relation between cell shape and breastcancer 
+```
+#### *No outliers spotted*
+
+
+#### Variable 3 : cell shape
+#### Plot the a frequency relation between cell shape and breastcancer 
+
+
+```{r}
+
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Cell.shape,
                fill = BreastCancer2$Class),
            position = "Stack") + scale_x_discrete("Cell Shape")+scale_y_continuous("Frequency")+
   guides(fill=guide_legend(title="Class type"))+scale_fill_manual(values=c("red", "blue"))
-# No outliers spotted 
+ 
+```
+#### *No outliers spotted*
 
-"Variable 4 : cell marginal adhesion"
-# Plot the a frequency relation between cell marginal adhesion and breastcancer 
+#### Variable 4 : cell marginal adhesion
+#### Plot the a frequency relation between cell marginal adhesion and breastcancer 
+
+
+```{r}
+
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Marg.adhesion,
                fill = BreastCancer2$Class),
            position = "Stack") + scale_x_discrete("Marginal Adhesion")+scale_y_continuous("Frequency")+
   guides(fill=guide_legend(title="Class type"))+scale_fill_manual(values=c("red", "blue"))
-# No outliers spotted 
+```
+#### *No outliers spotted*
 
-"Variable 5 : Single Epithelial Cell Sizehesion"
-# Plot the a frequency relation between Single Epithelial Cell Sizehesion and breastcancer 
+#### Variable 5 : Single Epithelial Cell Sizehesion
+#### Plot the a frequency relation between Single Epithelial Cell Sizehesion and breastcancer 
+```{r}
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Epith.c.size,
                fill = BreastCancer2$Class),
            position = "Stack") + scale_x_discrete("Single Epithelial Cell Size")+scale_y_continuous("Frequency")+
   guides(fill=guide_legend(title="Class type"))+scale_fill_manual(values=c("red", "blue"))
-# No outliers spotted 
+```
+#### *No outliers spotted*
 
-"Variable 6 : Bare Nuclei"
-# Plot the a frequency relation between Bare Nuclei and breastcancer 
+#### Variable 6 : Bare Nuclei
+#### Plot the a frequency relation between Bare Nuclei and breastcancer 
+```{r}
+
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Bare.nuclei,
@@ -106,7 +128,7 @@ ggplot() +
 # No outliers spotted 
 
 " Variable 7 bland Chromatin"
-
+# Plot the a frequency relation between cell shape and breastcancer 
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Bl.cromatin,
