@@ -8,35 +8,45 @@ output: html_document
 knitr::opts_chunk$set(error = TRUE)
 ```
 
-install.packages("mlbench")
+## Loding the data
+
+First instal the mlbench package and add it to the Working directory llibary
 ```{r}
+install.packages("mlbench") 
 rm(list=ls())         # remove working memory
 library("mlbench")    #install the right package
 data("BreastCancer")  #install the right dataset: BreastCancer
 View(BreastCancer)
 ```
+## Preprocessing the data
 
+Check the data on missing values and omit these values
 ```{r}
 ## Missing values 
-missing <- is.na(BreastCancer) #Check whether there are missing values
-View(missing) 
-#There are missing values, so delete these:
+# Check whether there are missing values
+missing <- is.na(BreastCancer) 
+summary(missing) 
+# There are missing values, so delete these:
 BreastCancer2<-na.omit(BreastCancer)
-View(BreastCancer2)
+summary(BreastCancer2)
 
 ```
-Only 16 out of 700 (+/- 2%) observations where lost, so imputing is not necessary because 
+Conclusion after checking the data, only 16 out of 700 (+/- 2%) observations where lost, so imputing is not necessary because 
 only very little information is lost because of the missing values 
+
+## Visualizing the data stage 1
+
 
 ```{r}
 ## Visualise the variables and see their relation with the Class type of the Cancer
 ## Also look for outliers, 
-#install.packages("ggplot2")
 
+# instal the nececary packages and add them to the libary
+install.packages("ggplot2")
 library("ggplot2")
 
 "Variable 1 : cell thickness"
-
+# Plot the a frequency relation between cell thikness and breastcancer 
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Cl.thickness,
@@ -46,7 +56,7 @@ ggplot() +
 # No outliers spotted 
 
 "Variable 2 : cell size"
-
+# Plot the a frequency relation between cell size and breastcancer 
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Cell.size,
@@ -56,7 +66,7 @@ ggplot() +
 # No outliers spotted 
 
 "Variable 3 : cell shape"
-
+# Plot the a frequency relation between cell shape and breastcancer 
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Cell.shape,
@@ -66,7 +76,7 @@ ggplot() +
 # No outliers spotted 
 
 "Variable 4 : cell marginal adhesion"
-
+# Plot the a frequency relation between cell marginal adhesion and breastcancer 
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Marg.adhesion,
@@ -76,7 +86,7 @@ ggplot() +
 # No outliers spotted 
 
 "Variable 5 : Single Epithelial Cell Sizehesion"
-
+# Plot the a frequency relation between Single Epithelial Cell Sizehesion and breastcancer 
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Epith.c.size,
@@ -86,7 +96,7 @@ ggplot() +
 # No outliers spotted 
 
 "Variable 6 : Bare Nuclei"
-
+# Plot the a frequency relation between Bare Nuclei and breastcancer 
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Bare.nuclei,
@@ -96,6 +106,7 @@ ggplot() +
 # No outliers spotted 
 
 " Variable 7 bland Chromatin"
+
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Bl.cromatin,
@@ -105,6 +116,7 @@ ggplot() +
 # No outliers spotted 
 
 "Variable 8 Normal Nucleoli"
+
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Normal.nucleoli,
