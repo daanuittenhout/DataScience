@@ -170,14 +170,14 @@ ggplot() +
 #### *No outliers spotted*
 
 ### conclusion
-All the variables are on an ordinal scale from 1 to 10. Therefore there are no clear outliers in the data to be spotted 
-For all the variable seems  that the higher the value, the more likely the obervervations class type is 'malignant'
+* All the variables are on an ordinal scale from 1 to 10. Therefore there are no clear outliers in the data to be spotted 
+* For all the variable seems that the higher the value, the more likely the obervervations class type is 'malignant'
 
 ## Correlation and Contingency
 
 
 ### Correlation Matrix
-* make a correlation matrix colored, so we can have a quick overview of strong and weak correlating variables. First make the variables numeric so we can plot the correlation matrix * 
+*The correlation matrix was colored, so there is a quick overview of strong and weak correlating variables. The variables are made numeric so these could be plotted in the correlation matrix* 
 
 
 ```{r}
@@ -193,22 +193,21 @@ correlation_matrix <- cor(breastcancer3)
 correlation_plot <- corrplot(correlation_matrix, method = 'color',type = 'upper', addCoef.col = "black")
 ```
 ### Conclusion
-Strong correlation between cell shape and cell size 
-All variables have a positive correlation 
+* Strong correlation between cell shape and cell size 
+* All variables have a positive correlation 
 
 ## Contingency Tables
 
 ### contingency table Clump thicknes
 ```{r}
-s
 install.packages("descr")
 library("descr")
 tabel1 <-CrossTable(BreastCancer2$Class, BreastCancer2$Cl.thickness,prop.c = FALSE,prop.chisq = FALSE, prop.t = FALSE)
 print(tabel1)
 ```
 #### Analysis
-shows that the thinkess of the Clump is not bigger than 8 for a benign tumor. 
-Moreover, if the thickness of the clump is smaller than 6, the tumor is mostly benign, vicaversa for thickness >= 6 
+* The table shows that the thinkess of the Clump is not bigger than 8 for a benign tumor. 
+* The thickness of the clump is smaller than 6, the tumor is mostly benign, vicaversa for thickness (>= 6).
 
 ### Contingency table Cell Size
 ```{r}
@@ -218,7 +217,7 @@ print(tabel2)
 ```
 
 #### Analysis
-shows that, except for a few unique cases, the cell size usually does not get bigger than 4 for a benign tumor. 
+* The table shows that, except for a few unique cases, the cell size usually does not get bigger than 4 for a benign tumor. 
 
 ### Contingency table Cell Shape
 
@@ -227,7 +226,7 @@ tabel3 <-CrossTable(BreastCancer2$Class, BreastCancer2$Cell.shape,prop.c = FALSE
 print(tabel3)
 ```
 #### Analysis
-Cell shape is decreasing for bening tumors. Malignant cases show a less clear pattern.
+* Cell shape is decreasing for bening tumors. Malignant cases show a less clear pattern.
 
 ### Contingency table Marginal Adhesion
 
@@ -236,8 +235,8 @@ tabel4 <-CrossTable(BreastCancer2$Class, BreastCancer2$Marg.adhesion,prop.c = FA
 print(tabel4)
 ```
 #### Analysis
-Except for one benign tumor, the marginal adhesion has a decreasing pattern for benign tumors and doesnt get bigger than 6.
-The malignant cases show a less abrupt decrease and do not really show a consistent pattern. 
+* Except for one benign tumor, the marginal adhesion has a decreasing pattern for benign tumors and doesnt get bigger than 6.
+* The malignant cases show a less abrupt decrease and do not really show a consistent pattern. 
 
 ### Contingency table  Epith Size
 ```{r}
@@ -245,7 +244,7 @@ tabel5 <-CrossTable(BreastCancer2$Class, BreastCancer2$Epith.c.size,prop.c = FAL
 print(tabel5)
 ```
 #### Analysis
-Benign cases are decreasing, whereas the malignant cases do not really show a consistent pattern.
+* Benign cases are decreasing, whereas the malignant cases do not really show a consistent pattern.
 
 ### Contingency table Bare Nuclei
 ```{r}
@@ -253,8 +252,8 @@ tabel6 <-CrossTable(BreastCancer2$Class, BreastCancer2$Bare.nuclei,prop.c = FALS
 print(tabel6)
 ```
 #### Analysis
-Benign cases are decreasing, malignant cases are quite consistent, except for the great amountin class 10. 
-One can say that there is a high  probability of a malignant tumor when the Bare nuclei class is 10 and visa versa for class 1.
+* Benign cases are decreasing, malignant cases are quite consistent, except for the great amountin class 10. 
+* One can say that there is a high  probability of a malignant tumor when the Bare nuclei class is 10 and visa versa for class 1.
 
 ### Contingency table Bl Cromatin
 ```{r}
@@ -263,7 +262,7 @@ tabel7 <-CrossTable(BreastCancer2$Class, BreastCancer2$Bl.cromatin,prop.c = FALS
 print(tabel7)
 ```
 #### Analysis
-Decreasing pattern for benign cases, with no Bland Chromatin bigger than 7 for a benign case. 
+* Decreasing pattern for benign cases, with no Bland Chromatin bigger than 7 for a benign case. 
 
 
 ### Contingency table Normal Nucleoli
@@ -272,7 +271,7 @@ tabel8 <-CrossTable(BreastCancer2$Class, BreastCancer2$Normal.nucleoli,prop.c = 
 print(tabel8)
 ```
 #### Analysis
-Benign class shows a decreasing pattern, with no Normal nucleoli bigger than 8
+* Benign class shows a decreasing pattern, with no Normal nucleoli bigger than 8
 
 ### Contingency table Mitoses
 ```{r}
@@ -280,7 +279,7 @@ tabel9 <-CrossTable(BreastCancer2$Class, BreastCancer2$Mitoses,prop.c = FALSE,pr
 print(tabel9)
 ```
 #### Analysis
-Decreasing pattern for benign cases. Allmost all benign cases have a Mitoses class of 1. 
-The malignant cases are also decreasing, but mitoses bigger than 1 are less rare.
+* Decreasing pattern for benign cases. Allmost all benign cases have a Mitoses class of 1. 
+* The malignant cases are also decreasing, but mitoses bigger than 1 are less rare.
 
 
