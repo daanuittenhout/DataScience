@@ -118,35 +118,45 @@ ggplot() +
 #### Variable 6 : Bare Nuclei
 #### Plot the a frequency relation between Bare Nuclei and breastcancer 
 ```{r}
-
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Bare.nuclei,
                fill = BreastCancer2$Class),
            position = "Stack") + scale_x_discrete("Bare Nuclei")+scale_y_continuous("Frequency")+
   guides(fill=guide_legend(title="Class type"))+scale_fill_manual(values=c("red", "blue"))
-# No outliers spotted 
 
-" Variable 7 bland Chromatin"
-# Plot the a frequency relation between cell shape and breastcancer 
+```
+#### *No outliers spotted*
+
+#### Variable 7 bland Chromatin"
+#### Plot the a frequency relation between bland Chromatin and breastcancer 
+
+```{r}
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Bl.cromatin,
                fill = BreastCancer2$Class),
            position = "Stack") + scale_x_discrete("Bland Chromatin")+scale_y_continuous("Frequency")+
   guides(fill=guide_legend(title="Class type"))+scale_fill_manual(values=c("red", "blue"))
-# No outliers spotted 
+```
+#### *No outliers spotted*
 
-"Variable 8 Normal Nucleoli"
-
+#### Variable 8 Normal Nucleoli
+#### Plot the a frequency relation between Normal Nucleoli and breastcancer 
+```{r}
 ggplot() +
   geom_bar(data = BreastCancer2,
            aes(x = Normal.nucleoli,
                fill = BreastCancer2$Class),
            position = "Stack") + scale_x_discrete("Normal Nucleoli")+scale_y_continuous("Frequency")+
   guides(fill=guide_legend(title="Class type"))+scale_fill_manual(values=c("red", "blue"))
-# No outliers spotted 
 
+```
+#### *No outliers spotted*
+
+#### Variable 9 Mitoses
+#### Plot the a frequency relation between Mitoses and breastcancer 
+```{r}
 " Variable 9 Mitoses"
 
 ggplot() +
@@ -155,10 +165,11 @@ ggplot() +
                fill = BreastCancer2$Class),
            position = "Stack") + scale_x_discrete("Mitoses")+scale_y_continuous("Frequency")+
   guides(fill=guide_legend(title="Class type"))+scale_fill_manual(values=c("red", "blue"))
-# No outliers spotted 
-
 
 ```
+#### *No outliers spotted*
+
+
 All the variables are on an ordinal scale from 1 to 10. Therefore there are no clear   outliers in the data to be spotted 
 For all the variable seems  that the higher the value, the more likely the obervervations 
 class type is 'malignant' 
