@@ -1,0 +1,215 @@
+---
+title: 'Assignment 2 -- One Solution'
+output:
+  html_document: default
+---
+#1. Reading the dataset 'ClassifyRisk.txt'
+
+```{r setup, include=TRUE}
+library(tidyverse)
+library(class)
+ClassRisk <- read.csv("C:/Users/rkessels/DataWrangling/Datasets/ClassifyRisk.txt",stringsAsFactors = TRUE)
+```
+ 
+#2. Normalization of the variables
+Before performing the *k*-nearest neighbor algorithm, the variables need to be normalized. Otherwise, large values, for example income, are overrepresented in measuring the Euclidean distance. 
+
+###2.1 Min-max normalization for the numerical variables
+```{r}
+attach(ClassRisk)
+rescale01 <- function(x){
+  rng <- range(x,na.rm = TRUE)
+  (x - rng[1]) / (rng[2] - rng[1])
+}
+
+ClassRisk <- ClassRisk %>% mutate(
+  age_MM = rescale01(age),
+  nr_loans_MM = rescale01(nr_loans),
+  income_MM = rescale01(income))
+```
+
+###2.2 Dummy variables for the categorical variables, including the target variable 'risk'
+*risk_D* with "bad loss" as the reference category
+```{r}
+risk_D <- c(rep(999, length(risk)))
+for (i in 1:length(risk)) {
+if(risk[i] == "good risk") risk_D[i] = 1 else risk_D[i] = 0
+}
+ClassRisk <- ClassRisk %>% mutate(risk_D)
+```
+*mortgage_D* with "n" as the reference category
+```{r}
+mortgage_D <- c(rep(999,length(mortgage)))
+for (i in 1:length(mortgage)) {
+if(mortgage[i] == "y") mortgage_D[i] = 1 else mortgage_D[i] = 0
+}
+ClassRisk <- ClassRisk %>% mutate(mortgage_D)
+```
+*single* and *married* for marital status with "other"" as the reference category
+```{r}
+single <- married <- c(rep(999,length(marital_status)))
+for (i in 1:length(marital_status)) {
+if(marital_status[i] == "single") single[i] = 1 else single[i] = 0
+if(marital_status[i] == "married") married[i] = 1 else married[i] = 0
+}
+ClassRisk <- ClassRisk %>% mutate(single, married)
+detach(ClassRisk)
+```
+
+
+#3. Twofold cross-validation 
+##3.1 Partitioning the data set into a training (75%) and test (25%) data set
+A random value between 0 and 1 is assigned to every observation in the data set. The observations that have been assigned a value smaller than or equal to 0.75 are assigned to the training data set and the other observations to the test data set.
+
+```{r}
+target <- round(length(ClassRisk$risk_D) * 0.75) # to get an idea how many observations the training data set should contain
+target
+set.seed(100) # to get the same sequence of random numbers each time you run the code below
+ClassRisk$part <- runif(length(ClassRisk$risk_D), min = 0, max = 1)
+Training <- ClassRisk[ClassRisk$part <= 0.75,]
+Testing <- ClassRisk[ClassRisk$part > 0.75,]
+```
+
+##3.2 Validating the partition
+It is important that the composition of the training and test data sets are as similar as possible. 
+
+###3.2.1 Two-sample Z-test for difference in proportions for the target variable 'risk'
+```{r}
+x1 <- sum(Testing$risk == "good risk")
+x2 <- sum(Training$risk == "good risk")
+n1 <- length(Testing$risk)
+n2 <- length(Training$risk)
+p1 <- x1 / n1
+p2 <- x2 / n2
+ppooled <- (x1+x2) / (n1+n2)
+zdata <- (p1-p2) / sqrt(ppooled*(1-ppooled)*((1/n1)+(1/n2)))
+zdata
+pvalue <- 2*pnorm(abs(zdata), lower.tail = FALSE)
+pvalue
+```
+
+There is no reason to believe that the proportions of good risks in the training and test data sets are siginificantly different, because the p-value of the z-statistic is much larger than the 5% or 10% significance level.
+
+###3.2.2 Validating the partitioning of the predictors
+###3.2.2.1 Two-sample T-test for difference in means for predictor 'age'
+```{r}
+x1_mean <- mean(Testing$age)
+x2_mean <- mean(Training$age)
+s1 <- sd(Testing$age)
+s2 <- sd(Training$age)
+n1 <- length(Testing$age)
+n2 <- length(Training$age)
+dfs <- min(n1-1, n2-1)
+tdata <- (x1_mean - x2_mean) / sqrt((s1^2/n1)+(s2^2/n2))
+tdata
+pvalue <- 2*pt(abs(tdata), df = dfs, lower.tail = FALSE)
+pvalue
+```
+
+Because the p-value of the t-statistic is much larger than the 5% or 10% significance level, there is not enough evidence to reject the null hypothesis that the means of 'age' in the training and test data sets are the same.
+
+###3.2.2.2 Two-sample T-test for difference in means for predictor 'income'
+```{r}
+x1_mean <- mean(Testing$income)
+x2_mean <- mean(Training$income)
+s1 <- sd(Testing$income)
+s2 <- sd(Training$income)
+n1 <- length(Testing$income)
+n2 <- length(Training$income)
+dfs <- min(n1-1, n2-1)
+tdata <- (x1_mean - x2_mean) / sqrt((s1^2/n1)+(s2^2/n2))
+tdata
+pvalue <- 2*pt(abs(tdata), df = dfs, lower.tail = FALSE)
+pvalue
+```
+
+Because the p-value of the t-statistic is much larger than the 5% or 10% significance level, there is not enough evidence to reject the null hypothesis that the means of 'income' in the training and test data sets are the same.
+
+###3.2.2.3 Two-sample T-test for difference in means for predictor 'number of loans'
+```{r}
+x1_mean <- mean(Testing$nr_loans)
+x2_mean <- mean(Training$nr_loans)
+s1 <- sd(Testing$nr_loans)
+s2 <- sd(Training$nr_loans)
+n1 <- length(Testing$nr_loans)
+n2 <- length(Training$nr_loans)
+tdata <- (x1_mean - x2_mean) / sqrt((s1^2/n1)+(s2^2/n2))
+tdata
+pvalue <- 2*pt(abs(tdata), df = dfs, lower.tail = FALSE)
+pvalue
+```
+
+Because the p-value of the t-statistic is much larger than the 5% or 10% significance level, there is not enough evidence to reject the null hypothesis that the means of 'number of loans' in the training and test data sets are the same.
+
+###3.2.2.4 Chi-square test for homogeneity of proportions for predictor 'marital status'
+```{r}
+summary(ClassRisk$marital_status)
+freq1_married <- sum(Testing$marital_status == "married")
+freq1_single <- sum(Testing$marital_status == "single")
+freq1_other <- sum(Testing$marital_status == "other")
+freq2_married <- sum(Training$marital_status == "married")
+freq2_single <- sum(Training$marital_status == "single")
+freq2_other <- sum(Training$marital_status == "other")
+freq_table <- as.table(rbind(c(freq1_married, freq1_single, freq1_other),
+                             c(freq2_married, freq2_single, freq2_other)))
+dimnames(freq_table) <- list(
+Data.Set = c("Testing Set", "Training Set"),
+Status = c("Married", "Single", "Other"))
+freq_table
+Xsq_data <- chisq.test(freq_table)
+Xsq_data$statistic
+Xsq_data$p.value
+```
+
+There is again not enough evidence to reject the null hypothesis that the proportions for the categories of 'marital status' are the same in the training and test data sets, because the p-value of the Chi-square statistic is much larger than the 5% or 10% significance level.
+
+#4. *k*-nearest neighbor predictions
+We examine the *k*-nearest neighbor predictions for the test data set based on the *k* most similar results in the training set. We therefore specify the following arguments in the *k*-nearest neighbor function: a data frame of the training data set, a data frame of the test data set, a vector with the true classifications for each observation in the training data set and *k*, the numbers of neighbors considered. We examine predictions for *k* = 2 and *k* = 3.
+
+###4.1 Creating the arguments for the *k*-nearest neighbor function
+The training and testing data sets for the *k*-nearest neighbor classification consist only of the normalized predictors. The vector with the true classifications includes the 10th column of the training data set.
+
+```{r}
+Training1 <- data.frame(Training[c(7,8,9,11,12,13)])
+Testing1 <- data.frame(Testing[c(7,8,9,11,12,13)])
+cl <- unlist(Training[10])
+```
+
+```{r}
+head(Training1)
+head(Testing1)
+head(cl)
+```
+
+###4.2 *k*-nearest neighbor predictions for the test set using *k* = 2 
+```{r}
+pred_k2 <- knn(Training1, Testing1, cl, k = 2, prob = FALSE)
+pred_k2
+as.numeric.factor <- function(x) {as.numeric(levels(x))[x]}
+pred_k2 <- as.numeric.factor(pred_k2)
+pred_k2
+```
+
+###4.3 *k*-nearest neighbor predictions for the test set using *k* = 3
+```{r}
+pred_k3 <- knn(Training1, Testing1, cl, k = 3, prob = FALSE)
+pred_k3
+pred_k3 <- as.numeric.factor(pred_k3)
+pred_k3
+```
+
+#5. Evaluating the accuracy of the predictions using the RMSE
+The *k*-nearest neighbor predictions are evaluated using the Root Mean Square Error (RMSE). The RMSE is the square root of the average squared differences between the classification predictions and the actual observations. 
+
+```{r}
+library(Metrics)
+RMSE_k2 = rmse(Testing$risk_D, pred_k2)
+RMSE_k3 = rmse(Testing$risk_D, pred_k3)
+```
+
+```{r, echo = FALSE}
+sprintf('For k = 2 the RMSE is: %.2f', RMSE_k2)
+sprintf('For k = 3 the RMSE is: %.2f', RMSE_k3)
+```
+
+The comparison of the RMSEs for *k* = 2 and *k* = 3 shows that the predictions are slightly more accurate for *k* = 3, because the RMSE is lower for *k* = 3 than for *k* = 2, `r RMSE_k3` versus `r RMSE_k2`, respectively. Choosing *k* = 3 instead of *k* = 2 will tend to smooth out more idiosyncratic behavior learned from the training data set.
